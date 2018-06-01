@@ -17,7 +17,6 @@ import sys
 import socket
 from contextlib import closing
 from array import array
-import click
 import re
 import time
 
@@ -53,7 +52,7 @@ class WebSocket_cURL():
         # Constructing socket
         self.host = host
         self.port = int(port)
-        self.bufsize = 4096
+        self.bufsize = 65536
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #self.sock = ssl.wrap_socket(self.sock, ca_certs=None, cert_reqs=ssl.CERT_NONE)
         # Constructing header
@@ -91,7 +90,6 @@ class WebSocket_cURL():
            
             print('sending WebScoket frame')
             self.sock.send(self.data_to_send)
-            self.sock.recv(self.bufsize)
             print(self.sock.recv(self.bufsize))
             self.sock.send(self.arr_close_frame)
             self.sock.recv(self.bufsize)
@@ -603,17 +601,6 @@ class FrameCrafter():
         #print ('Save current data to a file : W')
         print ('')
 
-
-@click.command()
-@click.argument('HOST')
-@click.argument('PORT')
-@click.argument('URL')
-@click.option('-s', '--string', help='Give a string to send')
-@click.option('-b', '--binary', type=click.File('r'), help='Give a path of a binary data')
-@click.option('-a', '--array', type=click.File('r'), help='Give a path of frame hex data')
-@click.option('-e', '--editor', is_flag=True, help='This enters FrameCrafter menu')
-@click.option('-H', '--header', multiple=True, help='Add HTTP headers')
-@click.option('-k', '--key', help='Specify your Sec-WebSocekt-Key, otherwise we supply a default key')
 def syntax_parser(host, port, url, string, binary, array, editor, header, key):
     url = re.sub(r'^/', '', url)
     custom_header = []
@@ -645,4 +632,9 @@ def syntax_parser(host, port, url, string, binary, array, editor, header, key):
     client = WebSocket_cURL(host, port, url, opcode, data_to_send, custom_header, sec_key).run()
 
 if __name__ == '__main__':
-    syntax_parser()
+    host = sys.argv[1]
+    port = sys.argv[2]
+    url = sys.argv[3]
+    string = sys.argv[4]
+    syntax_parser(host, port, url, string)
+
