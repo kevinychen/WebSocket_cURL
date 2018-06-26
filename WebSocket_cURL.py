@@ -636,5 +636,5 @@ if __name__ == '__main__':
     port = sys.argv[2]
     url = sys.argv[3]
     string = sys.argv[4]
-    syntax_parser(host, port, url, string)
+    syntax_parser(host, port, url, string, None, None, None, None, None)
 
