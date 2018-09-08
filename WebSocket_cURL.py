@@ -52,7 +52,7 @@ class WebSocket_cURL():
         # Constructing socket
         self.host = host
         self.port = int(port)
-        self.bufsize = 65536
+        self.bufsize = 9999999
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #self.sock = ssl.wrap_socket(self.sock, ca_certs=None, cert_reqs=ssl.CERT_NONE)
         # Constructing header
